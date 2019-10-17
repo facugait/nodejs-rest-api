@@ -1,3 +1,3 @@
 # Api REST 
 
-Practicing rest api.
+Practicing rest api with MongoDB.
