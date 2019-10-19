@@ -30,7 +30,7 @@ let dogController = {
   },
 
   getDog: function (req, res) {
-    Dog.findById()
+    Dog.findById(req.params.id)
       .then(dog => res.status(200).json(dog))
       .catch(err => res.status(404).json({
         "error": true,

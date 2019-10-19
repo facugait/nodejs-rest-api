@@ -30,7 +30,7 @@ let catController = {
   },
 
   getCat: function (req, res) {
-    Cat.findById()
+    Cat.findById(req.params.id)
       .then(cat => res.status(200).json(cat))
       .catch(err => res.status(404).json({
         "error": true,
