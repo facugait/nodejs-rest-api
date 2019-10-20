@@ -1,4 +1,4 @@
-const Cat = require('../../domain/schemas/cat.model');
+const Cat = require('../../domain/models/cat.model');
 const moment = require('moment');
 
 let catController = {

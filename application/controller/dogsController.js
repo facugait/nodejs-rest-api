@@ -1,80 +1,114 @@
-const Dog = require('../../domain/schemas/dog.model');
+const Dog = require('../../domain/models/dog.model');
+const schema = require('../../domain/schemas/dog.schema');
 const moment = require('moment');
 
 let dogController = {
 
-  saveDog: function (req, res) {
+  saveDog: async function (req, res) {
     const dog = req.body;
-
-    const newDog = new Dog(dog);
-
-    newDog.save()
-      .then(() => res.status(200).json({
+    if (schema.validate(req.body).error) {
+      res.status(400).json({
+        "error": true,
+        "msg": "Dog not saved, invalid body."
+      });
+      return;
+    }
+    try {
+      const newDog = new Dog(dog);
+      await newDog.save();
+      res.status(200).json({
         "success": true,
         "msg": "Dog saved!",
         "date": moment().format("dddd, MMMM Do YYYY, h:mm:ss a")
-      }))
-      .catch(err => res.status(400).json({
+      });
+    }
+    catch (err) {
+      res.status(500).json({
         "error": true,
-        "msg": "No dogs saved"
-      }));
+        "msg": "No dogs saved."
+      });
+    }
   },
 
-  getDogs: function (req, res) {
-    Dog.find()
-      .then(dogs => res.status(200).json(dogs))
-      .catch(err => res.status(404).json({
+  getDogs: async function (req, res) {
+    try {
+      const data = await Dog.find();
+      res.status(200).json(data);
+    }
+    catch (err) {
+      res.status(404).json({
         "error": true,
-        "msg": "No dogs found"
-      }));
+        "msg": "No dogs found in database."
+      });
+    }
   },
 
-  getDog: function (req, res) {
-    Dog.findById(req.params.id)
-      .then(dog => res.status(200).json(dog))
-      .catch(err => res.status(404).json({
+  getDog: async function (req, res) {
+    try {
+      const data = await Dog.findById(req.params.id);
+      data !== null ? res.status(200).json(data) : res.status(404).json({
         "error": true,
-        "msg": "No dog found"
-      }));
+        "msg": "Dog not found"
+      });
+    }
+    catch (err) {
+      res.status(404).json({
+        "error": true,
+        "msg": "Dog not found in database."
+      });
+    }
   },
 
-  updateDog: function (req, res) {
-    Dog.findByIdAndUpdate(req.params.id)
-      .then(dog => {
-        dog.name = req.body.name,
-        dog.race = req.body.race,
-        dog.color = req.body.color
-
-        dog.save()
-          .then(() => res.status(200).json({
-            "success": true,
-            "msg": "Dog updated!",
-            "date": moment().format("dddd, MMMM Do YYYY, h:mm:ss a")
-          }))
-          .catch(err => res.status(400).json({
-            "error": true,
-            "msg": "No dog updated"
-          }));
-      })
-      .catch(err => res.status(404).json({
+  updateDog: async function (req, res) {
+    var validation = schema.validate(req.body).error;
+    if (validation) {
+      res.status(400).json({
         "error": true,
-        "msg": "No dog found"
-      }));
+        "msg": validation.details.map((err) => err.message).join(', ')
+      });
+      return;
+    }
+    try {
+      var dogToUpdate = await Dog.findByIdAndUpdate(req.params.id);
+
+      dogToUpdate.name = req.body.name;
+      dogToUpdate.race = req.body.race;
+      dogToUpdate.color = req.body.color;
+
+      await dogToUpdate.save();
+  
+      res.status(200).json({
+        "success": true,
+        "msg": "Dog updated!",
+        "date": moment().format("dddd, MMMM Do YYYY, h:mm:ss a")
+      });
+    } catch (error) {
+
+      res.status(400).json({
+        "success": false,
+        "msg": "Dog not updated!",
+        "date": moment().format("dddd, MMMM Do YYYY, h:mm:ss a")
+      });
+    }
+  
   },
 
-  deleteDog: function (req, res) {
-    Dog.findByIdAndDelete(req.params.id)
-      .then(() => res.status(200).json({
+  deleteDog: async function (req, res) {
+    try {
+      await Dog.findByIdAndRemove(req.params.id)
+      res.status(200).json({
         "success": true,
         "msg": "Dog deleted!",
         "date": moment().format("dddd, MMMM Do YYYY, h:mm:ss a")
-      }))
-      .catch(err => res.status(404).json({
+      });
+    }
+    catch (err) {
+      res.status(404).json({
         "error": true,
         "msg": "No dog found"
-      }));
+      });
+    }
   }
-
 }
 
 module.exports = dogController;
