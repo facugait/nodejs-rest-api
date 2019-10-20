@@ -1,4 +1,5 @@
 const dogSchema = require('../models/dog.model')
+
 const dogBL = () => {
   const scope = this;
 
@@ -7,7 +8,6 @@ const dogBL = () => {
       const newDog = new dogSchema(dog);
       await newDog.save();
       return true;
-
     } catch (error) {
       return false;
     }
@@ -57,5 +57,5 @@ const dogBL = () => {
 
   return scope;
 }
-module.exports = dogBL();
 
+module.exports = dogBL();

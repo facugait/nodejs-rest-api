@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const dogsController = require('../controller/dogsController');
+const dogsController = require('../controllers/dogsController');
 
 router.get('/', dogsController.getDogs);
 router.get('/:id', dogsController.getDog);

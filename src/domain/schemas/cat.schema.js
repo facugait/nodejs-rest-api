@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi');
 
-const dogSchema = Joi.object({
+const catSchema = Joi.object({
   name: Joi
     .string()
     .min(3)
@@ -16,13 +16,12 @@ const dogSchema = Joi.object({
 
 const validation = () => {
   const scope = this;
-  scope.Validate = (dog) => {
-    const hasError =  dogSchema.validate(dog,{abortEarly: false}).error;
+  scope.Validate = (cat) => {
+    const hasError = catSchema.validate(cat, { abortEarly: false }).error;
     const messasge = !hasError ? "" : hasError.details.map((err) => err.message).join(', ');
     return { success: !hasError, messasge };
   }
   return scope;
-}
-
+};
 
 module.exports = validation();

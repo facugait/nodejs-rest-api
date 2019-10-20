@@ -1,28 +1,27 @@
-const schema = require('../../domain/schemas/dog.schema');
 const moment = require('moment');
-const dogBL = require('../../domain/BL/dog.bl')
-const dogValidator = require('../../domain/schemas/dog.schema')
+const catBL = require('../../domain/BL/cat.bl')
+const catValidator = require('../../domain/schemas/cat.schema')
 
-const dogController = {
+const catController = {
 
-  saveDog: async function (req, res) {
-    const dog = req.body;
+  saveCat: async function (req, res) {
+    const cat = req.body;
 
-    const validation = dogValidator.Validate(dog);
+    const validation = catValidator.Validate(cat);
     if (validation.success) {
 
-      const result = await dogBL.add(dog);
+      const result = await catBL.add(cat);
       if (result) {
         res.status(200).json({
           "success": result,
-          "msg": "Dog saved!",
+          "msg": "Cat saved!",
           "date": moment().format("dddd, MMMM Do YYYY, h:mm:ss a")
         });
       }
       else {
         res.status(500).json({
           "success": result,
-          "msg": "No dogs saved."
+          "msg": "No cats saved."
         });
       }
 
@@ -32,54 +31,52 @@ const dogController = {
         "msg": validation.messasge
       });
     }
-
-
   },
 
-  getDogs: async function (req, res) {
-    const data = await dogBL.getAll();
+  getCats: async function (req, res) {
+    const data = await catBL.getAll();
     if (data) {
       res.status(200).json(data);
     } else {
       res.status(404).json({
         "success": false,
-        "msg": "No dogs found.",
+        "msg": "No cats found.",
       });
     }
   },
 
-  getDog: async function (req, res) {
-    const data = await dogBL.getOne(req.params.id);
+  getCat: async function (req, res) {
+    const data = await catBL.getOne(req.params.id);
     if (data) {
       res.status(200).json(data);
     } else {
       res.status(404).json({
         "succes": false,
-        "msg": "Dog not found."
+        "msg": "Cat not found."
       })
     }
   },
 
-  updateDog: async function (req, res) {
-    var validation = dogValidator.Validate(req.body);
+  updateCat: async function (req, res) {
+    var validation = catValidator.Validate(req.body);
     if (validation.success) {
-      const dog = {
+      const cat = {
         id: req.params.id,
         name: req.body.name,
         race: req.body.race,
         color: req.body.color
       }
-      const result = await dogBL.update(dog);
+      const result = await catBL.update(cat);
       if (result) {
         res.status(200).json({
           "success": result,
-          "msg": "Dog updated!",
+          "msg": "Cat updated!",
           "date": moment().format("dddd, MMMM Do YYYY, h:mm:ss a")
         });
       } else {
         res.status(500).json({
           "success": result,
-          "msg": "No dogs saved."
+          "msg": "No cats saved."
         });
       }
     } else {
@@ -90,20 +87,21 @@ const dogController = {
     }
   },
 
-  deleteDog: async function (req, res) {
-    const result = await dogBL.delete(req.params.id);
+  deleteCat: async function (req, res) {
+    const result = await catBL.delete(req.params.id);
     if (result) {
       res.status(200).json({
         "success": result,
-        "msg": "Dog deleted!",
+        "msg": "Cat deleted!",
         "date": moment().format("dddd, MMMM Do YYYY, h:mm:ss a")
       });
     } else {
       res.status(404).json({
         "error": result,
-        "msg": "Dog not found"
+        "msg": "Cat not found"
       });
     }
   }
 }
-module.exports = dogController;
+
+module.exports = catController;
