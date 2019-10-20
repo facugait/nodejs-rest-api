@@ -7,8 +7,8 @@ Practicing rest api with Nodejs, Express and MongoDB.
 ├── src
 │   ├── application
 │   │   ├── controller
-│   │   │    ├── catsController.js
-│   │   │    └── dogsController.js
+│   │   │   ├── catsController.js
+│   │   │   └── dogsController.js
 │   │   └── routes
 │   │       ├── catRoutes.js
 │   │       ├── dogRoutes.js
