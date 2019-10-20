@@ -11,7 +11,18 @@ const dogSchema = Joi.object({
     .required(),
   color: Joi
     .string()
-    .required()    
+    .required()
 })
 
-module.exports = dogSchema;
+const validation = () => {
+  const scope = this;
+  scope.Validate = (dog) => {
+    const hasError =  dogSchema.validate(dog,{abortEarly: false}).error;
+    const messasge = !hasError ? "" : hasError.details.map((err) => err.message).join(', ');
+    return { success: !hasError, messasge };
+  }
+  return scope;
+}
+
+
+module.exports = validation();
