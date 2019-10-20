@@ -33,7 +33,7 @@ Practicing rest api with Nodejs, Express and MongoDB.
 `keys.js`: File with our MongoDB database URL<br/>
 `src/application/controllers`: Contains the code for our controllers<br/>
 `src/application/routes`: Contains the code with the API routing<br/>
-`src/domain/BL`: Contains the code for our API's business logic<br/>
+`src/domain/BL`: Contains the code for our API business logic<br/>
 `src/domain/models`: Contains each model representing the structure of data<br/>
 `src/domain/schemas`: Contains each schema to validate the data<br/>
 
