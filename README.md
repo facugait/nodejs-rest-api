@@ -6,7 +6,7 @@ Practicing rest api with Nodejs, Express and MongoDB.
 ```
 ├── src
 │   ├── application
-│   │   ├── controller
+│   │   ├── controllers
 │   │   │   ├── catsController.js
 │   │   │   └── dogsController.js
 │   │   └── routes
